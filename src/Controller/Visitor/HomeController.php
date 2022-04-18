@@ -12,7 +12,7 @@ class HomeController extends AbstractController
     #[Route('/', name: 'home')]
     public function index(): Response
     {
-        return $this->render('home.html.twig', [
+        return $this->render('home/home.html.twig', [
             'EcoIT' => 'EcoIt',
         ]);
     }
@@ -20,7 +20,7 @@ class HomeController extends AbstractController
     #[Route('/home/contact', name: 'contact')]
     public function contact(): Response
     {
-        return $this->render('base/contact.html.twig', [
+        return $this->render('home/contact.html.twig', [
             'contact' => 'Contact',
         ]);
     }
@@ -30,7 +30,7 @@ class HomeController extends AbstractController
     {
         $formations = $formationRepository->findAll();
 
-        return $this->render('base/formations.html.twig', [
+        return $this->render('home/formations_visite.html.twig', [
             'formations' => $formations
         ]);
     }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Student;
 
 use App\Repository\FormationRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;

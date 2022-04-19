@@ -21,7 +21,7 @@ class ApplyFormType extends AbstractType
         $builder
         ->add('email', EmailType::class)
         ->add('name', TextType::class)
-        ->add('surname', TextType::class)
+        ->add('firstname', TextType::class)
         ->add('description', TextareaType::class)
         ->add('imageFile', VichImageType::class)
         ->add('plainPassword', PasswordType::class, [

@@ -1,11 +1,15 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Instructor;
 
 use App\Entity\Formation;
+use App\Entity\Section;
+use App\Entity\Lesson;
 use App\Form\FormationType;
+use App\Form\SectionType;
 use App\Repository\FormationRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,13 +20,13 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/instructor')]
 class FormationController extends AbstractController
 {
-    #[Route('/formations', name: 'instructor_formations')]
-    public function instructorFormations(FormationRepository $formationRepository): Response
+    #[Route('/formations', name: 'instructor_formations_index')]
+    public function instructorFormationsIndex(FormationRepository $formationRepository): Response
     {
         $instructorFormations = $formationRepository->findAll();
 
         return $this->render('instructor/instructor_formations.html.twig', [
-            'instructor_formations' => $instructorFormations
+            'formationsIndex' => $instructorFormations
         ]);
     }
 
@@ -38,31 +42,53 @@ class FormationController extends AbstractController
         ]);
     }
 
-    #[Route('/formation/new', name: 'formation_new')]
-    public function newFormation(Request $request, 
-    EntityManagerInterface $entityManager): Response
-    {
-        $formation = new Formation();
+   #[Route('formation/new', name: 'formation_new')]
+   public function instructorFormationNew(Request $request,
+   EntityManagerInterface $entityManager)
+   {
+       $formation = new Formation();
+       $formationForm = $this->createForm(FormationType::class, $formation);
+       
+       $section = new Section();
+       $formation->getSections()->add($section);
 
-        $formation = $this->createForm(FormationType::class, $formation);
+       
+       $originalSection = new ArrayCollection();
+       foreach ($formation->getSections() as $section) {
+           $originalSection->add($section);
+       }
+
+       $originalLesson = new ArrayCollection();
+       foreach ($section->getLessons() as $lesson) {
+            $originalLesson->add($lesson);
+       }
+
+       $formationForm->handleRequest($request);
+
+       if ($formationForm->isSubmitted() && $formationForm->isValid()) {
+            foreach ($originalSection as $section) {
+                if ($formation->getSections()->contains($section) === false) {
+                    $entityManager->remove($section);
+                }
+            }
         
-        $formation->handleRequest($request);
-
-        if ($formation->isSubmitted() && $formation->isValid()) {
             $entityManager->persist($formation);
             $entityManager->flush();
-        }
 
-        return $this->render('instructor/instructor_formation_new.html.twig', [
-            'formationNew' => $formation->createView(),
-        ]);
-    }
+            $this->addFlash('success', 'Création réussie !');
+       }
+
+       return $this->render('instructor/instructor_formation_new.html.twig', [
+           'sectionForm' => $section,
+           'formationNew' => $formationForm->createView()
+       ]);
+   }
 
     // /**
 
     //  * @param App\Entity\Formation;
     //  */
-    #[Route('/formation/update/{id}', name: 'formation_update')]
+    #[Route('/formation/update/{id}', name: 'instructor_formation_update')]
     public function updateFormation(
         $id,
         Request $request, 
@@ -81,10 +107,11 @@ class FormationController extends AbstractController
         }
 
         return $this->render('instructor/instructor_formation_update.html.twig', [
-            'formation_update' => $formation->createView()
+            'formationUpdate' => $formation->createView()
         ]);
     }
    
+    #[Route('/formation/delete/{id}', name: 'instructor_formation_delete')]
     public function deleteFormation($id, 
         FormationRepository $formationRepository, 
         EntityManagerInterface $entityManager): Response 

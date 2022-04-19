@@ -33,7 +33,7 @@
         </div>
     </section>
     <section class="section_main">
-        {% for formation in instructor_formations %}
+        {% for formation in formationsIndex %}
             <div class="formation_globalwrapper">
                 <div class="formation_container key_bg2">
                     <div class="formation_title">
@@ -49,12 +49,12 @@
                                 alt="icone livre ouvert" 
                                 title="icon by : https://icons8.com/icon/jlJLS7OQV1fO/lire">
                         </a>
-                        <a href="{{ path('formation_update') }}">
+                        <a href="{{ path('instructor_formation_update') }}">
                             <img src="{{ asset('assets/storage/icons/edition.png') }}" 
                                 alt="icone crayon" 
                                 title="icon by : https://icons8.com/icon/Zs4SrvznrdHQ/stylo-à-bille">
                         </a>
-                        <a href="">
+                        <a href="{{ path('instructor_formation_delete') }}">
                             <img src="{{ asset('assets/storage/icons/corbeille.png') }}" 
                                 alt="icone poubelle" 
                                 title="icon by : https://icons8.com/icon/9deX0HJ5iAFS/poubelle">

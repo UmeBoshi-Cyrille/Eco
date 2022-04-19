@@ -17,7 +17,6 @@
                 <h2 class="formation_h2 key_ftdw font-f1">Liste des instructeurs</h2>
             </div>
             <form class="searchbar" action="{{ path('admin_instructors_search') }}"> 
-            {# {{ path('search') }} #}
                 <input class="input_searchtext" type="text" name="search">
                 <button class="button_search" type="submit" >
                     <img class="search_icon" src="{{ asset('assets/storage/icons/search.png') }}" 
@@ -38,7 +37,7 @@
                         <div class="formation_container key_bg4">
                 {% endif %}
                             <div class="formation_title">
-                                <h3 class="formation_h3 key_ftdw font-f1">{{instructor.name}} {{instructor.surname}}</h3>
+                                <h3 class="formation_h3 key_ftdw font-f1">{{instructor.name}} {{instructor.firstname}}</h3>
                             </div>
                             <div class="instructor_imgbox">
                                 <img class="instructor_img" src="" alt="photo de l'instructeur">

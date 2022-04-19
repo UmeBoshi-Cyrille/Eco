@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\FormationRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: FormationRepository::class)]
@@ -28,14 +30,19 @@ class Formation
     #[ORM\Column(type: 'boolean', nullable: true)]
     private $isPublished;
 
-    #[ORM\ManyToOne(targetEntity: Section::class, inversedBy: 'formations')]
-    private $section;
-
     #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'formations')]
     private $category;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'formations')]
     private $instructor;
+
+    #[ORM\OneToMany(mappedBy: 'formation', targetEntity: Section::class, orphanRemoval: true)]
+    private $sections;
+
+    public function __construct()
+    {
+        $this->sections = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -102,18 +109,6 @@ class Formation
         return $this;
     }
 
-    public function getSection(): ?Section
-    {
-        return $this->section;
-    }
-
-    public function setSection(?Section $section): self
-    {
-        $this->section = $section;
-
-        return $this;
-    }
-
     public function getCategory(): ?Category
     {
         return $this->category;
@@ -134,6 +129,36 @@ class Formation
     public function setInstructor(?User $instructor): self
     {
         $this->instructor = $instructor;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Section>
+     */
+    public function getSections(): Collection
+    {
+        return $this->sections;
+    }
+
+    public function addSection(Section $section): self
+    {
+        if (!$this->sections->contains($section)) {
+            $this->sections[] = $section;
+            $section->setFormation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSection(Section $section): self
+    {
+        if ($this->sections->removeElement($section)) {
+            // set the owning side to null (unless already changed)
+            if ($section->getFormation() === $this) {
+                $section->setFormation(null);
+            }
+        }
 
         return $this;
     }

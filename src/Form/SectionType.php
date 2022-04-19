@@ -3,6 +3,8 @@
 namespace App\Form;
 
 use App\Entity\Section;
+use App\entity\Lesson;
+use App\Form\LessonType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -21,7 +23,7 @@ class SectionType extends AbstractType
             ->add('publishedAt', DateType::class, [
                 'widget' => 'single_text'
             ])
-            ->add('lesson', CollectionType::class, [
+            ->add('lessons', CollectionType::class, [
                 'label' => false,
                 'entry_type' => LessonType::class,
                 'entry_options' => [

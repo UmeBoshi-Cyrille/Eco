@@ -21,15 +21,16 @@ class Section
     #[ORM\Column(type: 'datetime')]
     private $publishedAt;
 
-    #[ORM\ManyToOne(targetEntity: Lesson::class, inversedBy: 'sections')]
-    private $lesson;
+    #[ORM\ManyToOne(targetEntity: Formation::class, inversedBy: 'sections')]
+    #[ORM\JoinColumn(nullable: false)]
+    private $formation;
 
-    #[ORM\OneToMany(mappedBy: 'section', targetEntity: Formation::class)]
-    private $formations;
+    #[ORM\OneToMany(mappedBy: 'section', targetEntity: Lesson::class, orphanRemoval: true)]
+    private $lessons;
 
     public function __construct()
     {
-        $this->formations = new ArrayCollection();
+        $this->lessons = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -61,42 +62,42 @@ class Section
         return $this;
     }
 
-    public function getLesson(): ?Lesson
+    public function getFormation(): ?Formation
     {
-        return $this->lesson;
+        return $this->formation;
     }
 
-    public function setLesson(?Lesson $lesson): self
+    public function setFormation(?Formation $formation): self
     {
-        $this->lesson = $lesson;
+        $this->formation = $formation;
 
         return $this;
     }
 
     /**
-     * @return Collection<int, Formation>
+     * @return Collection<int, Lesson>
      */
-    public function getFormations(): Collection
+    public function getLessons(): Collection
     {
-        return $this->formations;
+        return $this->lessons;
     }
 
-    public function addFormation(Formation $formation): self
+    public function addLesson(Lesson $lesson): self
     {
-        if (!$this->formations->contains($formation)) {
-            $this->formations[] = $formation;
-            $formation->setSection($this);
+        if (!$this->lessons->contains($lesson)) {
+            $this->lessons[] = $lesson;
+            $lesson->setSection($this);
         }
 
         return $this;
     }
 
-    public function removeFormation(Formation $formation): self
+    public function removeLesson(Lesson $lesson): self
     {
-        if ($this->formations->removeElement($formation)) {
+        if ($this->lessons->removeElement($lesson)) {
             // set the owning side to null (unless already changed)
-            if ($formation->getSection() === $this) {
-                $formation->setSection(null);
+            if ($lesson->getSection() === $this) {
+                $lesson->setSection(null);
             }
         }
 

@@ -50,8 +50,11 @@ class FormationController extends AbstractController
        $formationForm = $this->createForm(FormationType::class, $formation);
        
        $section = new Section();
+       $section->setTitle("title");
        $formation->getSections()->add($section);
 
+        $lesson = new Lesson();
+        $section->getLessons()->add($lesson);
        
        $originalSection = new ArrayCollection();
        foreach ($formation->getSections() as $section) {

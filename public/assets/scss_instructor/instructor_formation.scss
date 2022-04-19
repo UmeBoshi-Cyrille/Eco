@@ -19,7 +19,6 @@ $breakpoints: (
 .form_wrap div,
 .panel_section,
 .panel_sectionWrap,
-.a_btn,
 .lesson_panel,
 .panel_lessonWrap,
 .lesson_wrap,
@@ -54,7 +53,6 @@ $breakpoints: (
 .form_wrap,
 .panel_section,
 .panel_sectionWrap,
-.a_btn,
 .lesson_panel,
 .panel_lessonWrap {
   justify-content: center;
@@ -71,7 +69,6 @@ $breakpoints: (
 .form_wrap,
 .panel_section,
 .panel_sectionWrap,
-.a_btn,
 .lesson_panel,
 .panel_lessonWrap {
   align-items: center;
@@ -143,6 +140,10 @@ $breakpoints: (
     padding: 20px 0 20px 0;
   }
 
+  .form_wrap {
+    margin-bottom: 20px;
+  }
+
   input[type="text"],
   textarea,
   input[type="date"],
@@ -186,14 +187,15 @@ $breakpoints: (
 /* ----- PANEL ----- */
 
 .panel_section {
-  margin-top: 20px;
+  margin-top: 40px;
 
   .panel_footer,
   .panel_lessonFooter {
     position: relative;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
+    // display: flex;
+    // justify-content: space-between;
+    // flex-direction: row;
+    // align-items: center;
   }
 
   .panel_body {
@@ -227,7 +229,6 @@ $breakpoints: (
     justify-content: center;
     align-items: center;
     border: none;
-    border-radius: 50%;
     width: 50px;
     height: 50px;
     margin: 10px;
@@ -239,44 +240,56 @@ $breakpoints: (
     height: 45px;
   }
 
-  .btnAddSection,
+  // .btnAddSection,
+  // .btnRemoveSection {
+  //   margin-left: 20px;
+  //   margin-right: 20px;
+  // }
+
   .btnRemoveSection {
-    margin-left: 20px;
-    margin-right: 20px;
-  }
-
-  .a_btn {
     position: absolute;
-    width: 160px;
-    height: 30px;
+    left: 20px;
+    bottom: 20px;
   }
 
-  .a_btn {
-    width: 40px;
-    height: 30px;
-    border: 1px solid;
-    transition: 0.3s ease;
+  .btnAddLesson {
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
   }
 
-  .a_btn:hover {
-    transform: scale(1.1);
-    z-index: 1;
-  }
+  // .a_btn {
+  //   position: absolute;
+  //   width: 160px;
+  //   height: 30px;
+  // }
 
-  .a_btn img {
-    width: 25px;
-    height: 25px;
-  }
+  // .a_btn {
+  //   width: 40px;
+  //   height: 30px;
+  //   border: 1px solid;
+  //   transition: 0.3s ease;
+  // }
 
-  .btnUpdate {
-    right: 10px;
-    bottom: 10px;
-  }
+  // .a_btn:hover {
+  //   transform: scale(1.1);
+  //   z-index: 1;
+  // }
 
-  .btnDelete {
-    left: 10px;
-    bottom: 10px;
-  }
+  // .a_btn img {
+  //   width: 25px;
+  //   height: 25px;
+  // }
+
+  // .btnUpdate {
+  //   right: 10px;
+  //   bottom: 10px;
+  // }
+
+  // .btnDelete {
+  //   left: 10px;
+  //   bottom: 10px;
+  // }
 }
 
 .panel_sectionWrap {

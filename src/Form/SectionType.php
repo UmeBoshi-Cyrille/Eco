@@ -32,6 +32,8 @@ class SectionType extends AbstractType
                 'by_reference' => false,
                 'allow_add' => true,
                 'allow_delete' => true,
+                'prototype' => true,
+                'prototype_name' => '_les_'
             ])
         ;
     }

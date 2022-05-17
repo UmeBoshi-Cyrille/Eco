@@ -3,35 +3,44 @@
 namespace App\Entity;
 
 use App\Repository\CategoryRepository;
+use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
+#[UniqueEntity('title')]
 class Category
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    private $id;
+    private ?int $id;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private $title;
+    #[ORM\Column(type: 'string', length: 75)]
+    #[Assert\NotBlank()]
+    #[Assert\Length(min: 2, max: 75)]
+    private string $title;
 
     #[ORM\Column(type: 'text', nullable: true)]
-    private $description;
+    #[Assert\NotBlank()]
+    private string $description;
 
-    #[ORM\Column(type: 'datetime')]
-    private $createdAt;
+    #[ORM\Column(type: 'datetime_immutable')]
+    #[Assert\NotNull()]
+    private ?DateTimeImmutable $createdAt;
 
     #[ORM\Column(type: 'boolean', nullable: true)]
-    private $isPublished;
+    private bool $isPublished;
 
     #[ORM\OneToMany(mappedBy: 'category', targetEntity: Formation::class)]
     private $formations;
 
     public function __construct()
     {
+        $this->createdAt = new \DateTimeImmutable();
         $this->formations = new ArrayCollection();
     }
 

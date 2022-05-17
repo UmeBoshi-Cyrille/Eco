@@ -5,18 +5,17 @@ namespace App\Form;
 use App\Entity\Formation;
 use App\Entity\Category;
 use App\Entity\User;
-use App\Entity\Section;
-use App\Entity\Lesson;
-use App\Form\LessonType;
 use App\Form\SectionType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class FormationType extends AbstractType
 {
@@ -24,10 +23,23 @@ class FormationType extends AbstractType
     {
         $builder
             ->add('title', TextType::class, [
-                'label' => 'Formation title'
+                'label' => 'Formation title',
+                'constraints' => [
+                    new Assert\Length(['min' => 2, 'max' => 75]),
+                    new Assert\NotBlank()
+                ]
             ])
-            ->add('sentence', TextType::class)
-            ->add('description', TextareaType::class)
+            ->add('sentence', TextType::class, [
+                'constraints' => [
+                    new Assert\Length(['min' => 2, 'max' => 255]),
+                    new Assert\NotBlank()
+                ]
+            ])
+            ->add('description', TextareaType::class, [
+                'constraints' => [
+                    new Assert\NotBlank()
+                ]
+            ])
             ->add('category', EntityType::class, [
                 'class' => Category::class,
                 'choice_label' => 'title'
@@ -38,10 +50,9 @@ class FormationType extends AbstractType
                     return $instructor->getName() . ' ' . $instructor->getFirstname();
                 },    
             ])
-            ->add('publishedAt', DateType::class, [
-                'widget' => 'single_text'
+            ->add('isPublished', CheckboxType::class, [
+                'required' => false
             ])
-            ->add('isPublished')
             ->add('sections', CollectionType::class, [
                 'label' => false,
                 'entry_type' => SectionType::class,

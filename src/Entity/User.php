@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -12,6 +13,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\Validator\Constraints as Assert;
 
 
 #[Vich\Uploadable]
@@ -23,7 +25,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    private $id;
+    private ?int $id;
 
     #[Vich\UploadableField(mapping: 'photo_profil', fileNameProperty: 'imageName')]
     private ?File $imageFile = null;
@@ -32,31 +34,40 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $imageName = null;
 
     #[ORM\Column(type: 'string', length: 180, unique: true)]
-    private $email;
+    #[Assert\NotBlank()]
+    #[Assert\Email()]
+    #[Assert\Length(min: 2, max: 180)]
+    private string $email;
 
     #[ORM\Column(type: 'json')]
-    private $roles = [];
+    #[Assert\NotNull()]
+    private array $roles = [];
 
     #[ORM\Column(type: 'string')]
-    private $password;
+    #[Assert\NotBlank()]
+    private string $password = 'password';
+
+    #[ORM\Column(type: 'string', length: 55, nullable: true)]
+    #[Assert\Length(min: 2, max: 55)]
+    private string $name;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $name;
+    #[Assert\Length(min: 2, max: 55)]
+    private string $firstname;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $firstname;
-
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $pseudo;
+    #[ORM\Column(type: 'string', length: 55, nullable: true)]
+    #[Assert\Length(min: 2, max: 55)]
+    private string $pseudo;
 
     #[ORM\Column(type: 'text', nullable: true)]
-    private $description;
+    private string $description;
 
-    #[ORM\Column(type: 'datetime')]
-    private $updatedAt;
+    #[ORM\Column(type: 'datetime_immutable')]
+    #[Assert\NotNull()]
+    private ?DateTimeImmutable $updatedAt;
 
     #[ORM\Column(type: 'boolean', nullable: true)]
-    private $RGPDConsent;
+    private bool $RGPDConsent;
 
     #[ORM\OneToMany(mappedBy: 'instructor', targetEntity: Formation::class)]
     private $formations;

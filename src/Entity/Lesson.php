@@ -3,34 +3,49 @@
 namespace App\Entity;
 
 use App\Repository\LessonRepository;
+use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: LessonRepository::class)]
+#[UniqueEntity('title')]
 class Lesson
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    private $id;
+    private ?int $id;
+
+    #[ORM\Column(type: 'string', length: 75)]
+    #[Assert\NotBlank()]
+    #[Assert\Length(min: 2, max: 75)]
+    private string $title;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $title;
-
-    #[ORM\Column(type: 'string', length: 255)]
-    private $video;
+    #[Assert\NotBlank()]
+    #[Assert\Length(min: 2, max: 255)]
+    private string $video;
 
     #[ORM\Column(type: 'text')]
-    private $content;
+    #[Assert\NotBlank()]
+    private string $content;
 
-    #[ORM\Column(type: 'datetime')]
-    private $publishedAt;
+    #[ORM\Column(type: 'datetime_immutable')]
+    #[Assert\NotNull()]
+    private ?DateTimeImmutable $publishedAt;
 
     #[ORM\Column(type: 'boolean', nullable: true)]
-    private $isPublished;
+    private bool $isPublished;
 
     #[ORM\ManyToOne(targetEntity: Section::class, inversedBy: 'lessons')]
     #[ORM\JoinColumn(nullable: false)]
     private $section;
+
+    public function __construct()
+    {
+        $this->publishedAt = new DateTimeImmutable();
+    }
 
     public function getId(): ?int
     {

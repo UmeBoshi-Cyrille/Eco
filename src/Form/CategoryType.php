@@ -4,23 +4,31 @@ namespace App\Form;
 
 use App\Entity\Category;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class CategoryType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('title', TextType::class)
-            ->add('description', TextareaType::class)
-            ->add('createdAt', DateType::class, [
-                'widget' => 'single_text'
+            ->add('title', TextType::class, [
+                'constraints' => [
+                    new Assert\NotBlank(),
+                    new Assert\Length(['min' => 2, 'max' => 75])
+                ]
             ])
-            ->add('isPublished')
+            ->add('description', TextareaType::class, [
+                'constraints' => [
+                    new Assert\NotBlank()
+                ]
+            ])
+            ->add('isPublished', CheckboxType::class, [
+                'required' => false
+            ])
         ;
     }
 

@@ -3,32 +3,42 @@
 namespace App\Entity;
 
 use App\Repository\FormationRepository;
+use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: FormationRepository::class)]
+#[UniqueEntity('title')]
 class Formation
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    private $id;
+    private ?int $id;
+
+    #[ORM\Column(type: 'string', length: 75)]
+    #[Assert\NotBlank()]
+    #[Assert\Length(min: 2, max: 75)]
+    private string $title;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $title;
-
-    #[ORM\Column(type: 'string', length: 255)]
-    private $sentence;
+    #[Assert\NotBlank()]
+    #[Assert\Length(min: 2, max: 255)]
+    private string $sentence;
 
     #[ORM\Column(type: 'text')]
-    private $description;
+    #[Assert\NotBlank()]
+    private string $description;
 
     #[ORM\Column(type: 'datetime')]
-    private $publishedAt;
+    #[Assert\NotNull()]
+    private ?DateTimeImmutable $publishedAt;
 
     #[ORM\Column(type: 'boolean', nullable: true)]
-    private $isPublished;
+    private bool $isPublished;
 
     #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'formations')]
     private $category;
@@ -41,6 +51,7 @@ class Formation
 
     public function __construct()
     {
+        $this->publishedAt = new DateTimeImmutable();
         $this->sections = new ArrayCollection();
     }
 

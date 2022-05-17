@@ -3,23 +3,30 @@
 namespace App\Entity;
 
 use App\Repository\SectionRepository;
+use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: SectionRepository::class)]
+#[UniqueEntity('title')]
 class Section
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    private $id;
+    private ?int $id;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private $title;
+    #[ORM\Column(type: 'string', length: 75)]
+    #[Assert\NotBlank()]
+    #[Assert\Length(min: 2, max: 75)]
+    private string $title;
 
-    #[ORM\Column(type: 'datetime')]
-    private $publishedAt;
+    #[ORM\Column(type: 'datetime_immutable')]
+    #[Assert\NotNull()]
+    private ?DateTimeImmutable $publishedAt;
 
     #[ORM\ManyToOne(targetEntity: Formation::class, inversedBy: 'sections')]
     #[ORM\JoinColumn(nullable: false)]
@@ -30,6 +37,7 @@ class Section
 
     public function __construct()
     {
+        $this->publishedAt = new DateTimeImmutable();
         $this->lessons = new ArrayCollection();
     }
 

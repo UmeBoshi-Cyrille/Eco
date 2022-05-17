@@ -13,16 +13,37 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Vich\UploaderBundle\Form\Type\VichImageType;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class ApplyFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-        ->add('email', EmailType::class)
-        ->add('name', TextType::class)
-        ->add('firstname', TextType::class)
-        ->add('description', TextareaType::class)
+        ->add('email', EmailType::class, [
+            'constraints' => [
+                new Assert\NotBlank(),
+                new Assert\Email(),
+                new Assert\Length(['min' => 2, 'max' => 180])
+            ]
+        ])
+        ->add('name', TextType::class, [
+            'constraints' => [
+                new Assert\NotBlank(),
+                new Assert\Length(['min' => 2, 'max' => 55])
+            ]
+        ])
+        ->add('firstname', TextType::class, [
+            'constraints' => [
+                new Assert\NotBlank(),
+                new Assert\Length(['min' => 2, 'max' => 55])
+            ]
+        ])
+        ->add('description', TextareaType::class, [
+            'constraints' => [
+                new Assert\NotNull()
+            ]
+        ])
         ->add('imageFile', VichImageType::class)
         ->add('plainPassword', PasswordType::class, [
             // instead of being set onto the object directly,

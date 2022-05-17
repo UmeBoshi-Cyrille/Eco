@@ -79,6 +79,8 @@ class FormationController extends AbstractController
             $entityManager->flush();
 
             $this->addFlash('success', 'Création réussie !');
+
+            return $this->redirectToRoute('instructor_formations_index');
        }
 
        return $this->render('instructor/instructor_formation_new.html.twig', [

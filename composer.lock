@@ -4,11 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-<<<<<<< HEAD
     "content-hash": "c8c103b9f74ed4e78b539a326395a72c",
-=======
-    "content-hash": "3444f3ba2bad435dbbd3a9d80e567ae7",
->>>>>>> Skeleton
     "packages": [
         {
             "name": "doctrine/annotations",

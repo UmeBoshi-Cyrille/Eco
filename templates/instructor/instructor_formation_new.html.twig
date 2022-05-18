@@ -35,24 +35,18 @@
                             {{ form_row(formationNew.publishedAt,{'attr' : { 'class': 'key_ftdw key_bgwd font-f2'} } ) }}
                             {{ form_row(formationNew.isPublished,{'attr' : { 'class': 'key_ftdw key_bgwd font-f2'} } ) }}
                         </div>
-                        <div class="panel key_bg1" id="section_list" 
-                        data-index="{{ formationNew.sections|length > 0 ? formationNew.sections|last.vars.name + 1 : 0 }}"
-                        data-prototype="{{ form_widget(formationNew.sections.vars.prototype)|e('html_attr') }}">
+                        <div class="panel-section key_bg1" id="section_list" data-prototype="{{ form_widget(formationNew.sections.vars.prototype)|e('html_attr') }}">
                             {% for section in formationNew.sections %}
-                                <div class="panel_section panel_sectionWrap key_bg2">
+                                <div class="panel panel_sectionWrap key_bg2">
                                     <div class="panel_heading">
                                                 <h3 class="lesson_h3">Section : <strong>{{ section.vars.value.title }}</strong></h3>
                                             </div>
                                     <div class="panel_body">
                                         {{ form_row(section.title,{'attr' : { 'class': 'key_ftdw key_bgwd font-f2'} }) }}
-                                        {{ form_row(section.lessons,{'attr' : { 'class': 'key_ftdw key_bgwd font-f2'} }) }}
                                         {{ form_row(section.publishedAt,{'attr' : { 'class': 'key_ftdw key_bgwd font-f2'} }) }}
                                     </div>
-                                    <div class="panel_footer"></div>
                                 </div>
-                                <div class="lesson_panel key_bg1" id="lesson_list" 
-                                data-index="{{ sectionForm.lessons|length > 0 ? sectionForm.lessons|last.vars.name + 1 : 0 }}"
-                                data-prototype="{{ form_widget(sectionForm.lessons.vars.prototype)|e('html_attr') }}">
+                                <div class="lesson_panel key_bg1" id="lesson_list" data-prototype="{{ form_widget(sectionForm.lessons.vars.prototype)|e('html_attr') }}">
                                     {% for lesson in sectionForm.lessons %}
                                         <div class="panel_lesson panel_lessonWrap">
                                             <div class="panel_lessonHead">
@@ -68,6 +62,11 @@
                                                 </div>
                                             </div>
                                             <div class="panel_lessonFooter">
+                                                {# <button class="btn btnAddLesson key_bg1">
+                                                    <img src="{{ asset('assets/storage/icons/add.png') }}" 
+                                                        alt="icone ajouter" 
+                                                        title="icon by : https://icons8.com/icon/37839/ajouter">
+                                                </button> #}
                                                 {# <button class="btn btnRemoveLesson key_bg1">
                                                     <img src="{{ asset('assets/storage/icons/minus.png') }}" 
                                                         alt="icone ajouter" 
@@ -77,13 +76,6 @@
                                         </div>
                                     {% endfor %}
                                 </div> 
-                                {# <div class="panel_footer">
-                                    <button class="btn btnAddLesson key_bg1">
-                                        <img src="{{ asset('assets/storage/icons/add.png') }}" 
-                                            alt="icone ajouter" 
-                                            title="icon by : https://icons8.com/icon/37839/ajouter">
-                                    </button>
-                                </div> #}
                             {% endfor %}
                         </div>
                         <button class="formation_button key_ftdw" type="submit">Submit</button>
@@ -100,5 +92,9 @@
             integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" 
             crossorigin="anonymous">
     </script>
+<<<<<<< HEAD
     <script src="{{ asset('assets/js/embededForms.js') }}"></script>
+=======
+    <script src="{{ asset('assets/js/formations.js') }}"></script>
+>>>>>>> parent of ae0f854 (last commit for ECF)
 {% endblock %}
